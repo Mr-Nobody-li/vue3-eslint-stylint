@@ -1,5 +1,7 @@
 # vue3-ts
 
+在vue3+ts项目中使用eslint+stylint+prettier实现项目规范的模板
+
 ## Project setup
 ```
 npm install

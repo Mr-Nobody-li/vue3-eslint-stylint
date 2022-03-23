@@ -1,0 +1,6 @@
+*.js
+*.ts
+*.jpg
+*.woff
+/dist/
+/node_modules/

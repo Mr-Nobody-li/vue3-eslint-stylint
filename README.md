@@ -182,15 +182,19 @@ module.exports = {
 ```
 
 ### stylelint
+这个好理解 就是检查样式的
 
 安装依赖(安装完毕后需要重启vscode)
 ```
-"lint-staged": "^12.3.5",
+npm i -D postcss postcss-html postcss-scss stylelint stylelint-config-html stylelint-config-recess-order stylelint-config-recommended 
+```
+devDependencies
+```
 "postcss": "^8.4.8",
 "postcss-html": "^1.3.0",  // stylelint-config-html需要postcss-html
-"postcss-scss": "^4.0.3", // 格式化样式文件需要
+"postcss-scss": "^4.0.3", // 格式化样式文件需要 .sass .scss
 "stylelint": "^14.5.1",
-"stylelint-config-html": "^1.0.0",
+"stylelint-config-html": "^1.0.0", // 识别html、vue这类文件中的样式
 "stylelint-config-recess-order": "^3.0.0", // 主要用来修改css样式编写顺序
 "stylelint-config-recommended": "^7.0.0",
 ```
@@ -249,6 +253,72 @@ module.exports = {
 /node_modules/
 ```
 
+### husky lint-staged
+husky：代码提交钩子，例如 pre-commit 钩子就会在你执行 git commit 前触发
+
+lint-staged：对 Git 暂存区代码(被 git add 的文件)进行质量检查
+
+下面的配置适用于husky6+，老版本不能直接使用
+
+安装依赖
+```
+npm i -D husky lint-staged @commitlint/cli @commitlint/config-conventional
+```
+
+devDependencies
+```
+"husky": "^7.0.4",
+"lint-staged": "^12.3.5",
+"@commitlint/cli": "^12.0.1", //husky需要这个依赖
+"@commitlint/config-conventional": "^12.0.1", //husky需要这个依赖
+```
+
+package.json的script中添加prepare命令，这样在安装依赖的时候，会自动执行husky的初始化
+
+关于prepare命令的含义，可以参考<a href="https://zhuanlan.zhihu.com/p/369923271">知乎网友总结</a>，或者<a href="https://docs.npmjs.com/cli/v8/using-npm/scripts">官网解释</a>
+```
+"prepare": "husky install"
+```
+
+手动执行prepare命令，或者安装依赖后，本地会生成一个.husky的文件夹，向里面添加hook（pre-commit和commit-msg）
+```
+<!-- 非win10系统 mac win11 -->
+npx husky add .husky/commit-msg 'npx --no-install commitlint --edit "$1"'
+npx husky add .husky/pre-commit "npx lint-staged"
+<!-- win10 -->
+npx husky add .husky/commit-msg
+npx husky add .husky/pre-commit
+<!-- 打开.husky/commit-msg  将undefined 改为 npx --no-install commitlint --edit "$1" -->
+<!-- 打开.husky//pre-commit  将undefined 改为 npx lint-staged -->
+
+```
+
+添加.commitlintrc rules看情况使用
+```
+// build：主要目的是修改项目构建系统(例如 glup，webpack，rollup 的配置等)的提交或打前端包
+// docs：文档更新
+// feat：新增功能
+// merge：分支合并 Merge branch ? of ?
+// fix：bug 修复
+// perf：性能, 体验优化
+// refactor：重构代码(既没有新增功能，也没有修复 bug)
+// style：不影响程序逻辑的代码修改(修改空白字符，格式缩进，补全缺失的分号等，没有改变代码逻辑)
+// test：新增测试用例或是更新现有测试
+// revert：回滚某个更早之前的提交
+// chore：不属于以上类型的其他类型
+
+module.exports = {
+  extends: ['@commitlint/config-conventional']
+  // rules: {
+  //   'type-enum': [2, 'always', [
+  //     "build", "docs", "feat", "merge", "fix", "perf", "refactor", "style", "test", "revert", "chore"
+  //   ]],
+  //   'subject-full-stop': [0, 'never'],
+  //   'subject-case': [0, 'never']
+  // }
+}
+```
+
 
 ### 问题记录
 **Q:**
@@ -260,24 +330,4 @@ Unknown word (CssSyntaxError)错误
 "postcss": "^8.4.8",
 "postcss-html": "^1.3.0",
 "postcss-scss": "^4.0.3",
-```
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
 ```

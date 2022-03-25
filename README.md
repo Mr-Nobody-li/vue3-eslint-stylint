@@ -7,6 +7,20 @@
 https://juejin.cn/post/7069315908597973023#heading-19
 ```
 
+### vscode插件
+添加.vscode\extensions.json配置文件，这里面是项目推荐安装的vscode插件
+```
+{
+  "recommendations": [
+    // "lokalise.i18n-ally",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint"
+  ]
+}
+
+```
+
 ### eslint
 使用vue-cli初始化项目时选择eslint作为代码检查工具，package.json中会自动安装相关依赖
 ```

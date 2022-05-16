@@ -1,24 +1,45 @@
-# vue3-ts前端工程化
+# vue3-前端规范
 
-在vue3+ts项目中使用eslint+stylint+prettier实现代码格式
+这个仓库是一个模板仓库，针对使用`vue2/3`、`js/ts`开发的项目使用，仓库已经配置好了一些前端规范的依赖和插件，具体包括
+
+- [x] eslint、prettier、stylelint
+- [x] lint-staged、husky
+- [ ] webpack/vite打包优化
 
 参考文章
-```
-https://juejin.cn/post/7069315908597973023#heading-19
-```
+> https://juejin.cn/post/7069315908597973023#heading-19
 
-### vscode插件
+### 需要安装的vscode插件
 添加.vscode\extensions.json配置文件，这里面是项目推荐安装的vscode插件
 ```
 {
   "recommendations": [
-    // "lokalise.i18n-ally",
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
     "stylelint.vscode-stylelint"
+    "obkoro1.korofileheader"
   ]
 }
 
+```
+`korofileheader`是一个可以自动生成头部注释的插件，安装之后需要加一些插件配置，主要是为了减少合并代码造成的冲突
+```
+{
+  "fileheader.customMade": {
+    "Author": "git config user.name", // 获取用户名
+    "Date": "Do not edit", // 文件创建时间(不变)
+    "LastEditors": "git config user.name", // 文件最后编辑者 与Author字段一致
+    // 由于编辑文件就会变更最后编辑时间，多人协作中合并的时候会导致merge
+    // 可以将时间颗粒度改为周、或者月，这样冲突就减少很多。搜索变更时间格式: dateFormat
+    "LastEditTime": "Do not edit", // 文件最后编辑时间
+    // 插件会自动将光标移动到Description选项中 方便输入 Description字段可以在specialOptions更改
+    "Description": "" // 介绍文件的作用、文件的入参、出参。
+  },
+  "fileheader.configObj": {
+    "autoAdd": true, // 检测文件没有头部注释，自动添加文件头部注释
+    "dateFormat": "YYYY-MM" // 输出：2019-05 该功能将影响所有时间字段
+  }
+}
 ```
 
 ### eslint
